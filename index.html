@@ -1,0 +1,1092 @@
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Neo Love Pharmacy - Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <div id="app" class="flex-grow flex flex-col">
+    <!-- Login Page -->
+    <section id="loginPage"
+      class="flex items-center justify-center min-h-screen bg-gradient-to-r from-purple-700 via-green-600 to-purple-900 px-4">
+      <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
+        <h1 class="text-3xl font-semibold text-center mb-6 text-purple-800">Neo Love Pharmacy</h1>
+        <h2 class="text-xl font-medium mb-6 text-gray-700 text-center">Admin Login</h2>
+        <form id="loginForm" class="space-y-5">
+          <div>
+            <label for="username" class="block text-gray-700 font-semibold mb-1">Username</label>
+            <input type="text" id="username" name="username" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600"
+              autocomplete="username" />
+          </div>
+          <div>
+            <label for="password" class="block text-gray-700 font-semibold mb-1">Password</label>
+            <input type="password" id="password" name="password" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-600"
+              autocomplete="current-password" />
+          </div>
+          <button type="submit"
+            class="w-full bg-purple-700 hover:bg-purple-800 text-white font-semibold py-2 rounded-md transition">
+            Login
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Dashboard Page -->
+    <section id="dashboardPage" class="hidden flex flex-col min-h-screen">
+      <header class="bg-blue-800 text-white flex items-center justify-between px-6 py-4 shadow-md">
+        <h1 class="text-2xl font-semibold">Neo Love Pharmacy - Dashboard</h1>
+        <button id="logoutBtn"
+          class="flex items-center space-x-2 bg-blue-700 hover:bg-blue-900 px-3 py-1 rounded-md transition"
+          title="Logout">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </button>
+      </header>
+
+      <main class="flex-grow overflow-auto p-6 bg-blue-50">
+        <div class="max-w-7xl mx-auto space-y-8">
+          <!-- Summary Cards -->
+          <section aria-label="Summary" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white rounded-lg shadow p-5 flex items-center space-x-4">
+              <div class="bg-blue-100 text-blue-700 p-3 rounded-full">
+                <i class="fas fa-pills fa-2x"></i>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Total Obat</p>
+                <p id="totalMedicine" class="text-2xl font-semibold text-gray-900">0</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-5 flex items-center space-x-4">
+              <div class="bg-red-100 text-red-700 p-3 rounded-full">
+                <i class="fas fa-boxes fa-2x"></i>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Stok Obat</p>
+                <p id="totalStock" class="text-2xl font-semibold text-gray-900">0</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-5 flex items-center space-x-4">
+              <div class="bg-yellow-100 text-yellow-700 p-3 rounded-full">
+                <i class="fas fa-file-invoice-dollar fa-2x"></i>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Total Pengeluaran</p>
+                <p id="totalExpenses" class="text-2xl font-semibold text-gray-900">Rp 0</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-5 flex items-center space-x-4">
+              <div class="bg-blue-100 text-blue-700 p-3 rounded-full">
+                <i class="fas fa-cash-register fa-2x"></i>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500">Total Penjualan</p>
+                <p id="totalSales" class="text-2xl font-semibold text-gray-900">Rp 0</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Tabs -->
+          <section aria-label="Admin Management and Records" class="bg-white rounded-lg shadow p-6">
+            <div class="flex flex-col sm:flex-row sm:space-x-6 space-y-4 sm:space-y-0 border-b border-gray-200 mb-6">
+              <button class="tabBtn px-4 py-2 font-semibold text-blue-700 border-b-2 border-blue-700 focus:outline-none"
+                data-tab="medicines" aria-selected="true" role="tab" id="tab-medicines" aria-controls="panel-medicines"
+                tabindex="0">
+                Obat
+              </button>
+              <button
+                class="tabBtn px-4 py-2 font-semibold text-gray-600 hover:text-blue-700 border-b-2 border-transparent focus:outline-none"
+                data-tab="admins" aria-selected="false" role="tab" id="tab-admins" aria-controls="panel-admins"
+                tabindex="-1">
+                Admin
+              </button>
+              <button
+                class="tabBtn px-4 py-2 font-semibold text-gray-600 hover:text-blue-700 border-b-2 border-transparent focus:outline-none"
+                data-tab="sales" aria-selected="false" role="tab" id="tab-sales" aria-controls="panel-sales"
+                tabindex="-1">
+                Penjualan Obat
+              </button>
+              <button
+                class="tabBtn px-4 py-2 font-semibold text-gray-600 hover:text-blue-700 border-b-2 border-transparent focus:outline-none"
+                data-tab="expenses" aria-selected="false" role="tab" id="tab-expenses" aria-controls="panel-expenses"
+                tabindex="-1">
+                Laporan Keuangan
+              </button>
+            </div>
+
+            <!-- Tab Panels -->
+            <div>
+              <!-- Medicines Panel -->
+              <div id="panel-medicines" role="tabpanel" aria-labelledby="tab-medicines" tabindex="0" class="tabPanel">
+                <div class="flex flex-col space-y-4">
+                  <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-700">Daftar Obat</h3>
+                    <button id="addMedicineBtn"
+                      class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-md flex items-center space-x-2">
+                      <i class="fas fa-plus"></i>
+                      <span>Tambah Obat</span>
+                    </button>
+                  </div>
+                  <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 bg-white rounded-md shadow">
+                      <thead class="bg-blue-700 text-white">
+                        <tr>
+                          <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Nama Obat</th>
+                          <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Kategori</th>
+                          <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Stok</th>
+                          <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Harga (Rp)</th>
+                          <th scope="col" class="px-4 py-3 text-center text-sm font-semibold">Aksi</th>
+                        </tr>
+                      </thead>
+                      <tbody id="medicineTableBody" class="divide-y divide-gray-200"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Admins Panel -->
+              <div id="panel-admins" role="tabpanel" aria-labelledby="tab-admins" tabindex="0" class="tabPanel hidden">
+                <div class="flex flex-col space-y-4">
+                  <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-700">Daftar Admin</h3>
+                    <button id="addAdminBtn"
+                      class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-md flex items-center space-x-2">
+                      <i class="fas fa-user-plus"></i>
+                      <span>Tambah Admin</span>
+                    </button>
+                  </div>
+                  <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 bg-white rounded-md shadow">
+                      <thead class="bg-blue-700 text-white">
+                        <tr>
+                          <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Username</th>
+                          <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Nama Lengkap</th>
+                          <th scope="col" class="px-4 py-3 text-center text-sm font-semibold">Aksi</th>
+                        </tr>
+                      </thead>
+                      <tbody id="adminTableBody" class="divide-y divide-gray-200"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sales Panel -->
+              <div id="panel-sales" role="tabpanel" aria-labelledby="tab-sales" tabindex="0" class="tabPanel hidden">
+                <div class="flex flex-col space-y-4">
+                  <div class="flex justify-between items-center space-x-2 flex-wrap">
+                    <h3 class="text-lg font-semibold text-gray-700">Catat Penjualan Obat</h3>
+                    <div class="flex space-x-2 mt-2 sm:mt-0">
+                      <button id="addSaleBtn"
+                        class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-md flex items-center space-x-2">
+                        <i class="fas fa-plus"></i>
+                        <span>Tambah Penjualan</span>
+                      </button>
+                      <button id="exportSalesPdfBtn"
+                        class="bg-indigo-700 hover:bg-indigo-800 text-white px-4 py-2 rounded-md flex items-center space-x-2">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Export PDF</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 bg-white rounded-md shadow">
+                      <thead class="bg-blue-700 text-white">
+                        <tr>
+                          <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Nama Pembeli</th>
+                          <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Nama Obat</th>
+                          <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Jumlah</th>
+                          <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Tanggal</th>
+                          <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Total Harga (Rp)</th>
+                        </tr>
+                      </thead>
+                      <tbody id="salesTableBody" class="divide-y divide-gray-200"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Expenses Panel -->
+              <div id="panel-expenses" role="tabpanel" aria-labelledby="tab-expenses" tabindex="0"
+                class="tabPanel hidden">
+                <div class="flex flex-col space-y-4">
+                  <div class="flex justify-between items-center space-x-2 flex-wrap">
+                    <h3 class="text-lg font-semibold text-gray-700">Laporan Keuangan</h3>
+                    <div class="flex space-x-2 mt-2 sm:mt-0">
+                      <button id="addExpenseBtn"
+                        class="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-md flex items-center space-x-2">
+                        <i class="fas fa-plus"></i>
+                        <span>Tambah Pengeluaran</span>
+                      </button>
+                      <button id="exportExpensesPdfBtn"
+                        class="bg-indigo-700 hover:bg-indigo-800 text-white px-4 py-2 rounded-md flex items-center space-x-2">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Export PDF</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200 bg-white rounded-md shadow">
+                      <thead class="bg-blue-700 text-white">
+                        <tr>
+                          <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Deskripsi</th>
+                          <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Jumlah Pengeluaran (Rp)</th>
+                          <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Tanggal</th>
+                        </tr>
+                      </thead>
+                      <tbody id="expensesTableBody" class="divide-y divide-gray-200"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </section>
+
+    <!-- Modals -->
+    <!-- Medicine Modal -->
+    <div id="medicineModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50" role="dialog"
+      aria-modal="true" aria-labelledby="medicineModalTitle">
+      <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative">
+        <h2 id="medicineModalTitle" class="text-xl font-semibold mb-4 text-blue-800">Tambah / Edit Obat</h2>
+        <form id="medicineForm" class="space-y-4">
+          <div>
+            <label for="medicineName" class="block font-semibold text-gray-700 mb-1">Nama Obat</label>
+            <input type="text" id="medicineName" name="medicineName" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+          </div>
+          <div>
+            <label for="medicineCategory" class="block font-semibold text-gray-700 mb-1">Kategori</label>
+            <select id="medicineCategory" name="medicineCategory" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600">
+              <option value="">Pilih Kategori</option>
+              <option value="Obat Bebas">Obat Bebas</option>
+              <option value="Obat Keras">Obat Keras</option>
+              <option value="Vitamin & Suplemen">Vitamin & Suplemen</option>
+              <option value="Alat Kesehatan">Alat Kesehatan</option>
+            </select>
+          </div>
+          <div>
+            <label for="medicineStock" class="block font-semibold text-gray-700 mb-1">Stok</label>
+            <input type="number" id="medicineStock" name="medicineStock" min="0" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+          </div>
+          <div>
+            <label for="medicinePrice" class="block font-semibold text-gray-700 mb-1">Harga (Rp)</label>
+            <input type="number" id="medicinePrice" name="medicinePrice" min="0" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+          </div>
+          <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+            <button type="button" id="medicineModalCancelBtn"
+              class="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition">
+              Batal
+            </button>
+            <button type="submit"
+              class="px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800 text-white font-semibold transition">
+              Simpan
+            </button>
+          </div>
+        </form>
+        <button id="medicineModalCloseBtn" aria-label="Close modal"
+          class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 focus:outline-none">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Admin Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50"
+      role="dialog" aria-modal="true" aria-labelledby="adminModalTitle">
+      <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative">
+        <h2 id="adminModalTitle" class="text-xl font-semibold mb-4 text-blue-800">Tambah / Edit Admin</h2>
+        <form id="adminForm" class="space-y-4">
+          <div>
+            <label for="adminUsername" class="block font-semibold text-gray-700 mb-1">Username</label>
+            <input type="text" id="adminUsername" name="adminUsername" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+          </div>
+          <div>
+            <label for="adminFullName" class="block font-semibold text-gray-700 mb-1">Nama Lengkap</label>
+            <input type="text" id="adminFullName" name="adminFullName" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+          </div>
+          <div>
+            <label for="adminPassword" class="block font-semibold text-gray-700 mb-1">Password</label>
+            <input type="password" id="adminPassword" name="adminPassword" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+              autocomplete="new-password" />
+          </div>
+          <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+            <button type="button" id="adminModalCancelBtn"
+              class="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition">
+              Batal
+            </button>
+            <button type="submit"
+              class="px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800 text-white font-semibold transition">
+              Simpan
+            </button>
+          </div>
+        </form>
+        <button id="adminModalCloseBtn" aria-label="Close modal"
+          class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 focus:outline-none">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Sale Modal -->
+    <div id="saleModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50"
+      role="dialog" aria-modal="true" aria-labelledby="saleModalTitle">
+      <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative">
+        <h2 id="saleModalTitle" class="text-xl font-semibold mb-4 text-blue-800">Tambah Penjualan Obat</h2>
+        <form id="saleForm" class="space-y-4">
+          <div>
+            <label for="buyerName" class="block font-semibold text-gray-700 mb-1">Nama Pembeli</label>
+            <input type="text" id="buyerName" name="buyerName" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+          </div>
+          <div>
+            <label for="saleMedicine" class="block font-semibold text-gray-700 mb-1">Nama Obat</label>
+            <select id="saleMedicine" name="saleMedicine" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600">
+              <option value="">Pilih Obat</option>
+            </select>
+          </div>
+          <div>
+            <label for="saleQuantity" class="block font-semibold text-gray-700 mb-1">Jumlah</label>
+            <input type="number" id="saleQuantity" name="saleQuantity" min="1" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+          </div>
+          <div>
+            <label for="saleDate" class="block font-semibold text-gray-700 mb-1">Tanggal</label>
+            <input type="date" id="saleDate" name="saleDate" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+          </div>
+          <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+            <button type="button" id="saleModalCancelBtn"
+              class="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition">
+              Batal
+            </button>
+            <button type="submit"
+              class="px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800 text-white font-semibold transition">
+              Simpan
+            </button>
+          </div>
+        </form>
+        <button id="saleModalCloseBtn" aria-label="Close modal"
+          class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 focus:outline-none">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Expense Modal -->
+    <div id="expenseModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50"
+      role="dialog" aria-modal="true" aria-labelledby="expenseModalTitle">
+      <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative">
+        <h2 id="expenseModalTitle" class="text-xl font-semibold mb-4 text-blue-800">Tambah Pengeluaran</h2>
+        <form id="expenseForm" class="space-y-4">
+          <div>
+            <label for="expenseDescription" class="block font-semibold text-gray-700 mb-1">Deskripsi</label>
+            <input type="text" id="expenseDescription" name="expenseDescription" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+          </div>
+          <div>
+            <label for="expenseAmount" class="block font-semibold text-gray-700 mb-1">Jumlah Pengeluaran (Rp)</label>
+            <input type="number" id="expenseAmount" name="expenseAmount" min="0" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+          </div>
+          <div>
+            <label for="expenseDate" class="block font-semibold text-gray-700 mb-1">Tanggal</label>
+            <input type="date" id="expenseDate" name="expenseDate" required
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600" />
+          </div>
+          <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+            <button type="button" id="expenseModalCancelBtn"
+              class="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition">
+              Batal
+            </button>
+            <button type="submit"
+              class="px-4 py-2 rounded-md bg-blue-700 hover:bg-blue-800 text-white font-semibold transition">
+              Simpan
+            </button>
+          </div>
+        </form>
+        <button id="expenseModalCloseBtn" aria-label="Close modal"
+          class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 focus:outline-none">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    (() => {
+      // Data storage in localStorage keys
+      const STORAGE_KEYS = {
+        ADMINS: 'neoLoveAdmins',
+        MEDICINES: 'neoLoveMedicines',
+        SALES: 'neoLoveSales',
+        EXPENSES: 'neoLoveExpenses',
+        LOGGED_IN_ADMIN: 'neoLoveLoggedInAdmin',
+      };
+
+      // Default admin for first login
+      const defaultAdmin = {
+        username: 'admin',
+        fullName: 'Administrator',
+        password: 'admin123',
+      };
+
+      // Elements
+      const loginPage = document.getElementById('loginPage');
+      const dashboardPage = document.getElementById('dashboardPage');
+      const loginForm = document.getElementById('loginForm');
+      const logoutBtn = document.getElementById('logoutBtn');
+
+      // Summary elements
+      const totalMedicineEl = document.getElementById('totalMedicine');
+      const totalStockEl = document.getElementById('totalStock');
+      const totalExpensesEl = document.getElementById('totalExpenses');
+      const totalSalesEl = document.getElementById('totalSales');
+
+      // Tabs
+      const tabButtons = document.querySelectorAll('.tabBtn');
+      const tabPanels = document.querySelectorAll('.tabPanel');
+
+      // Tables bodies
+      const medicineTableBody = document.getElementById('medicineTableBody');
+      const adminTableBody = document.getElementById('adminTableBody');
+      const salesTableBody = document.getElementById('salesTableBody');
+      const expensesTableBody = document.getElementById('expensesTableBody');
+
+      // Modals and forms
+      const medicineModal = document.getElementById('medicineModal');
+      const medicineForm = document.getElementById('medicineForm');
+      const medicineModalCloseBtn = document.getElementById('medicineModalCloseBtn');
+      const medicineModalCancelBtn = document.getElementById('medicineModalCancelBtn');
+      const addMedicineBtn = document.getElementById('addMedicineBtn');
+
+      const adminModal = document.getElementById('adminModal');
+      const adminForm = document.getElementById('adminForm');
+      const adminModalCloseBtn = document.getElementById('adminModalCloseBtn');
+      const adminModalCancelBtn = document.getElementById('adminModalCancelBtn');
+      const addAdminBtn = document.getElementById('addAdminBtn');
+
+      const saleModal = document.getElementById('saleModal');
+      const saleForm = document.getElementById('saleForm');
+      const saleModalCloseBtn = document.getElementById('saleModalCloseBtn');
+      const saleModalCancelBtn = document.getElementById('saleModalCancelBtn');
+      const addSaleBtn = document.getElementById('addSaleBtn');
+      const saleMedicineSelect = document.getElementById('saleMedicine');
+      const exportSalesPdfBtn = document.getElementById('exportSalesPdfBtn');
+
+      const expenseModal = document.getElementById('expenseModal');
+      const expenseForm = document.getElementById('expenseForm');
+      const expenseModalCloseBtn = document.getElementById('expenseModalCloseBtn');
+      const expenseModalCancelBtn = document.getElementById('expenseModalCancelBtn');
+      const addExpenseBtn = document.getElementById('addExpenseBtn');
+      const exportExpensesPdfBtn = document.getElementById('exportExpensesPdfBtn');
+
+      // State
+      let admins = [];
+      let medicines = [];
+      let sales = [];
+      let expenses = [];
+      let loggedInAdmin = null;
+
+      // Medicine editing state
+      let editingMedicineId = null;
+      // Admin editing state
+      let editingAdminUsername = null;
+
+      // Utility functions
+      function saveToStorage(key, data) {
+        localStorage.setItem(key, JSON.stringify(data));
+      }
+      function loadFromStorage(key) {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : null;
+      }
+
+      // Initialize data
+      function initializeData() {
+        // Load admins or create default
+        admins = loadFromStorage(STORAGE_KEYS.ADMINS);
+        if (!admins || admins.length === 0) {
+          admins = [defaultAdmin];
+          saveToStorage(STORAGE_KEYS.ADMINS, admins);
+        }
+
+        medicines = loadFromStorage(STORAGE_KEYS.MEDICINES);
+        if (!medicines) {
+          medicines = [
+            {
+              id: crypto.randomUUID(),
+              name: 'Paracetamol',
+              category: 'Obat Bebas',
+              stock: 100,
+              price: 2000,
+            },
+            {
+              id: crypto.randomUUID(),
+              name: 'Amoxicillin',
+              category: 'Obat Keras',
+              stock: 50,
+              price: 5000,
+            },
+            {
+              id: crypto.randomUUID(),
+              name: 'Vitamin C',
+              category: 'Vitamin & Suplemen',
+              stock: 200,
+              price: 3000,
+            },
+            {
+              id: crypto.randomUUID(),
+              name: 'Thermometer Digital',
+              category: 'Alat Kesehatan',
+              stock: 15,
+              price: 75000,
+            },
+            {
+              id: crypto.randomUUID(),
+              name: 'Ibuprofen',
+              category: 'Obat Bebas',
+              stock: 80,
+              price: 4000,
+            },
+            {
+              id: crypto.randomUUID(),
+              name: 'Cough Syrup',
+              category: 'Obat Bebas',
+              stock: 60,
+              price: 15000,
+            },
+            {
+              id: crypto.randomUUID(),
+              name: 'Insulin',
+              category: 'Obat Keras',
+              stock: 30,
+              price: 120000,
+            },
+            {
+              id: crypto.randomUUID(),
+              name: 'Multivitamin',
+              category: 'Vitamin & Suplemen',
+              stock: 90,
+              price: 25000,
+            },
+            {
+              id: crypto.randomUUID(),
+              name: 'Blood Pressure Monitor',
+              category: 'Alat Kesehatan',
+              stock: 10,
+              price: 150000,
+            },
+            {
+              id: crypto.randomUUID(),
+              name: 'Antacid',
+              category: 'Obat Bebas',
+              stock: 70,
+              price: 3500,
+            },
+          ];
+          saveToStorage(STORAGE_KEYS.MEDICINES, medicines);
+        }
+
+        sales = loadFromStorage(STORAGE_KEYS.SALES) || [];
+        expenses = loadFromStorage(STORAGE_KEYS.EXPENSES) || [];
+        loggedInAdmin = loadFromStorage(STORAGE_KEYS.LOGGED_IN_ADMIN);
+      }
+
+      // Render functions
+      function renderSummary() {
+        totalMedicineEl.textContent = medicines.length;
+        totalStockEl.textContent = medicines.reduce((acc, m) => acc + m.stock, 0);
+        totalExpensesEl.textContent = 'Rp ' + expenses.reduce((acc, e) => acc + Number(e.amount), 0).toLocaleString('id-ID');
+        totalSalesEl.textContent = 'Rp ' + sales.reduce((acc, s) => {
+          const med = medicines.find(m => m.id === s.medicineId);
+          return acc + (med ? med.price * s.quantity : 0);
+        }, 0).toLocaleString('id-ID');
+      }
+
+      function renderMedicines() {
+        medicineTableBody.innerHTML = '';
+        medicines.forEach((med) => {
+          const tr = document.createElement('tr');
+          tr.classList.add('hover:bg-gray-50');
+          tr.innerHTML = `
+            <td class="px-4 py-3 text-sm text-gray-700">${med.name}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${med.category}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${med.stock}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${med.price.toLocaleString('id-ID')}</td>
+            <td class="px-4 py-3 text-center space-x-2">
+              <button data-id="${med.id}" class="editMedicineBtn text-blue-600 hover:text-blue-800" title="Edit Obat"><i class="fas fa-edit"></i></button>
+              <button data-id="${med.id}" class="deleteMedicineBtn text-red-600 hover:text-red-800" title="Hapus Obat"><i class="fas fa-trash-alt"></i></button>
+            </td>
+          `;
+          medicineTableBody.appendChild(tr);
+        });
+        updateSaleMedicineOptions();
+      }
+
+      function renderAdmins() {
+        adminTableBody.innerHTML = '';
+        admins.forEach((admin) => {
+          const tr = document.createElement('tr');
+          tr.classList.add('hover:bg-gray-50');
+          tr.innerHTML = `
+            <td class="px-4 py-3 text-sm text-gray-700">${admin.username}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${admin.fullName}</td>
+            <td class="px-4 py-3 text-center space-x-2">
+              <button data-username="${admin.username}" class="editAdminBtn text-blue-600 hover:text-blue-800" title="Edit Admin"><i class="fas fa-edit"></i></button>
+              <button data-username="${admin.username}" class="deleteAdminBtn text-red-600 hover:text-red-800" title="Hapus Admin"><i class="fas fa-trash-alt"></i></button>
+            </td>
+          `;
+          adminTableBody.appendChild(tr);
+        });
+      }
+
+      function renderSales() {
+        salesTableBody.innerHTML = '';
+        sales.forEach((sale) => {
+          const med = medicines.find(m => m.id === sale.medicineId);
+          const medName = med ? med.name : 'Obat tidak ditemukan';
+          const totalPrice = med ? med.price * sale.quantity : 0;
+          const tr = document.createElement('tr');
+          tr.classList.add('hover:bg-gray-50');
+          tr.innerHTML = `
+            <td class="px-4 py-3 text-sm text-gray-700">${sale.buyerName}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${medName}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${sale.quantity}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${sale.date}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${totalPrice.toLocaleString('id-ID')}</td>
+          `;
+          salesTableBody.appendChild(tr);
+        });
+      }
+
+      function renderExpenses() {
+        expensesTableBody.innerHTML = '';
+        expenses.forEach((expense) => {
+          const tr = document.createElement('tr');
+          tr.classList.add('hover:bg-gray-50');
+          tr.innerHTML = `
+            <td class="px-4 py-3 text-sm text-gray-700">${expense.description}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${Number(expense.amount).toLocaleString('id-ID')}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">${expense.date}</td>
+          `;
+          expensesTableBody.appendChild(tr);
+        });
+      }
+
+      // Update medicine options in sales modal
+      function updateSaleMedicineOptions() {
+        saleMedicineSelect.innerHTML = '<option value="">Pilih Obat</option>';
+        medicines.forEach((med) => {
+          saleMedicineSelect.innerHTML += `<option value="${med.id}">${med.name} (Stok: ${med.stock})</option>`;
+        });
+      }
+
+      // Show/hide pages
+      function showLoginPage() {
+        loginPage.classList.remove('hidden');
+        dashboardPage.classList.add('hidden');
+      }
+      function showDashboardPage() {
+        loginPage.classList.add('hidden');
+        dashboardPage.classList.remove('hidden');
+        renderSummary();
+        renderMedicines();
+        renderAdmins();
+        renderSales();
+        renderExpenses();
+      }
+
+      // Login handler
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = loginForm.username.value.trim();
+        const password = loginForm.password.value.trim();
+
+        const admin = admins.find(a => a.username === username && a.password === password);
+        if (admin) {
+          loggedInAdmin = admin;
+          saveToStorage(STORAGE_KEYS.LOGGED_IN_ADMIN, loggedInAdmin);
+          showDashboardPage();
+          loginForm.reset();
+        } else {
+          alert('Username atau password salah!');
+        }
+      });
+
+      // Logout handler
+      logoutBtn.addEventListener('click', () => {
+        loggedInAdmin = null;
+        localStorage.removeItem(STORAGE_KEYS.LOGGED_IN_ADMIN);
+        showLoginPage();
+      });
+
+      // Tabs switching
+      tabButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          tabButtons.forEach(b => {
+            b.classList.remove('border-blue-700', 'text-blue-700');
+            b.classList.add('border-transparent', 'text-gray-600');
+            b.setAttribute('aria-selected', 'false');
+            b.setAttribute('tabindex', '-1');
+          });
+          btn.classList.add('border-blue-700', 'text-blue-700');
+          btn.classList.remove('border-transparent', 'text-gray-600');
+          btn.setAttribute('aria-selected', 'true');
+          btn.setAttribute('tabindex', '0');
+
+          tabPanels.forEach(panel => {
+            panel.classList.add('hidden');
+          });
+          const targetPanel = document.getElementById('panel-' + btn.dataset.tab);
+          if (targetPanel) targetPanel.classList.remove('hidden');
+        });
+      });
+
+      // Medicine modal open/close
+      function openMedicineModal(editId = null) {
+        editingMedicineId = editId;
+        if (editId) {
+          const med = medicines.find(m => m.id === editId);
+          if (med) {
+            medicineForm.medicineName.value = med.name;
+            medicineForm.medicineCategory.value = med.category;
+            medicineForm.medicineStock.value = med.stock;
+            medicineForm.medicinePrice.value = med.price;
+          }
+        } else {
+          medicineForm.reset();
+        }
+        medicineModal.classList.remove('hidden');
+        medicineForm.medicineName.focus();
+      }
+      function closeMedicineModal() {
+        medicineModal.classList.add('hidden');
+        editingMedicineId = null;
+      }
+      addMedicineBtn.addEventListener('click', () => openMedicineModal());
+      medicineModalCloseBtn.addEventListener('click', closeMedicineModal);
+      medicineModalCancelBtn.addEventListener('click', closeMedicineModal);
+
+      // Medicine form submit
+      medicineForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = medicineForm.medicineName.value.trim();
+        const category = medicineForm.medicineCategory.value;
+        const stock = Number(medicineForm.medicineStock.value);
+        const price = Number(medicineForm.medicinePrice.value);
+
+        if (!name || !category || stock < 0 || price < 0) {
+          alert('Mohon isi data obat dengan benar.');
+          return;
+        }
+
+        if (editingMedicineId) {
+          // Edit existing
+          const medIndex = medicines.findIndex(m => m.id === editingMedicineId);
+          if (medIndex !== -1) {
+            medicines[medIndex] = { id: editingMedicineId, name, category, stock, price };
+          }
+        } else {
+          // Add new
+          medicines.push({ id: crypto.randomUUID(), name, category, stock, price });
+        }
+        saveToStorage(STORAGE_KEYS.MEDICINES, medicines);
+        renderMedicines();
+        renderSummary();
+        closeMedicineModal();
+      });
+
+      // Medicine edit/delete buttons
+      medicineTableBody.addEventListener('click', (e) => {
+        if (e.target.closest('.editMedicineBtn')) {
+          const id = e.target.closest('.editMedicineBtn').dataset.id;
+          openMedicineModal(id);
+        }
+        if (e.target.closest('.deleteMedicineBtn')) {
+          const id = e.target.closest('.deleteMedicineBtn').dataset.id;
+          if (confirm('Yakin ingin menghapus obat ini?')) {
+            medicines = medicines.filter(m => m.id !== id);
+            // Also remove sales related to this medicine
+            sales = sales.filter(s => s.medicineId !== id);
+            saveToStorage(STORAGE_KEYS.MEDICINES, medicines);
+            saveToStorage(STORAGE_KEYS.SALES, sales);
+            renderMedicines();
+            renderSales();
+            renderSummary();
+          }
+        }
+      });
+
+      // Admin modal open/close
+      function openAdminModal(editUsername = null) {
+        editingAdminUsername = editUsername;
+        if (editUsername) {
+          const admin = admins.find(a => a.username === editUsername);
+          if (admin) {
+            adminForm.adminUsername.value = admin.username;
+            adminForm.adminFullName.value = admin.fullName;
+            adminForm.adminPassword.value = admin.password;
+            adminForm.adminUsername.disabled = true;
+          }
+        } else {
+          adminForm.reset();
+          adminForm.adminUsername.disabled = false;
+        }
+        adminModal.classList.remove('hidden');
+        adminForm.adminUsername.focus();
+      }
+      function closeAdminModal() {
+        adminModal.classList.add('hidden');
+        editingAdminUsername = null;
+        adminForm.adminUsername.disabled = false;
+      }
+      addAdminBtn.addEventListener('click', () => openAdminModal());
+      adminModalCloseBtn.addEventListener('click', closeAdminModal);
+      adminModalCancelBtn.addEventListener('click', closeAdminModal);
+
+      // Admin form submit
+      adminForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = adminForm.adminUsername.value.trim();
+        const fullName = adminForm.adminFullName.value.trim();
+        const password = adminForm.adminPassword.value;
+
+        if (!username || !fullName || !password) {
+          alert('Mohon isi data admin dengan benar.');
+          return;
+        }
+
+        if (editingAdminUsername) {
+          // Edit existing
+          const adminIndex = admins.findIndex(a => a.username === editingAdminUsername);
+          if (adminIndex !== -1) {
+            admins[adminIndex].fullName = fullName;
+            admins[adminIndex].password = password;
+          }
+        } else {
+          // Add new
+          if (admins.find(a => a.username === username)) {
+            alert('Username sudah digunakan.');
+            return;
+          }
+          admins.push({ username, fullName, password });
+        }
+        saveToStorage(STORAGE_KEYS.ADMINS, admins);
+        renderAdmins();
+        closeAdminModal();
+      });
+
+      // Admin edit/delete buttons
+      adminTableBody.addEventListener('click', (e) => {
+        if (e.target.closest('.editAdminBtn')) {
+          const username = e.target.closest('.editAdminBtn').dataset.username;
+          openAdminModal(username);
+        }
+        if (e.target.closest('.deleteAdminBtn')) {
+          const username = e.target.closest('.deleteAdminBtn').dataset.username;
+          if (username === loggedInAdmin?.username) {
+            alert('Anda tidak dapat menghapus admin yang sedang login.');
+            return;
+          }
+          if (confirm('Yakin ingin menghapus admin ini?')) {
+            admins = admins.filter(a => a.username !== username);
+            saveToStorage(STORAGE_KEYS.ADMINS, admins);
+            renderAdmins();
+          }
+        }
+      });
+
+      // Sale modal open/close
+      function openSaleModal() {
+        saleForm.reset();
+        saleModal.classList.remove('hidden');
+        saleForm.buyerName.focus();
+      }
+      function closeSaleModal() {
+        saleModal.classList.add('hidden');
+      }
+      addSaleBtn.addEventListener('click', openSaleModal);
+      saleModalCloseBtn.addEventListener('click', closeSaleModal);
+      saleModalCancelBtn.addEventListener('click', closeSaleModal);
+
+      // Sale form submit
+      saleForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const buyerName = saleForm.buyerName.value.trim();
+        const medicineId = saleForm.saleMedicine.value;
+        const quantity = Number(saleForm.saleQuantity.value);
+        const date = saleForm.saleDate.value;
+
+        if (!buyerName || !medicineId || quantity < 1 || !date) {
+          alert('Mohon isi data penjualan dengan benar.');
+          return;
+        }
+
+        const medicine = medicines.find(m => m.id === medicineId);
+        if (!medicine) {
+          alert('Obat tidak ditemukan.');
+          return;
+        }
+        if (medicine.stock < quantity) {
+          alert('Stok obat tidak cukup.');
+          return;
+        }
+
+        // Reduce stock
+        medicine.stock -= quantity;
+
+        sales.push({ buyerName, medicineId, quantity, date });
+        saveToStorage(STORAGE_KEYS.SALES, sales);
+        saveToStorage(STORAGE_KEYS.MEDICINES, medicines);
+        renderMedicines();
+        renderSales();
+        renderSummary();
+        closeSaleModal();
+      });
+
+      // Expense modal open/close
+      function openExpenseModal() {
+        expenseForm.reset();
+        expenseModal.classList.remove('hidden');
+        expenseForm.expenseDescription.focus();
+      }
+      function closeExpenseModal() {
+        expenseModal.classList.add('hidden');
+      }
+      addExpenseBtn.addEventListener('click', openExpenseModal);
+      expenseModalCloseBtn.addEventListener('click', closeExpenseModal);
+      expenseModalCancelBtn.addEventListener('click', closeExpenseModal);
+
+      // Expense form submit
+      expenseForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const description = expenseForm.expenseDescription.value.trim();
+        const amount = Number(expenseForm.expenseAmount.value);
+        const date = expenseForm.expenseDate.value;
+
+        if (!description || amount < 0 || !date) {
+          alert('Mohon isi data pengeluaran dengan benar.');
+          return;
+        }
+
+        expenses.push({ description, amount, date });
+        saveToStorage(STORAGE_KEYS.EXPENSES, expenses);
+        renderExpenses();
+        renderSummary();
+        closeExpenseModal();
+      });
+
+      // Export sales to PDF
+      exportSalesPdfBtn.addEventListener('click', () => {
+        if (sales.length === 0) {
+          alert('Tidak ada data penjualan untuk diekspor.');
+          return;
+        }
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        doc.setFontSize(18);
+        doc.text('Laporan Penjualan Obat - Neo Love Pharmacy', 14, 22);
+        doc.setFontSize(12);
+        doc.text(`Tanggal: ${new Date().toLocaleDateString('id-ID')}`, 14, 30);
+
+        const headers = [['Nama Pembeli', 'Nama Obat', 'Jumlah', 'Tanggal', 'Total Harga (Rp)']];
+        const data = sales.map(sale => {
+          const med = medicines.find(m => m.id === sale.medicineId);
+          const medName = med ? med.name : 'Obat tidak ditemukan';
+          const totalPrice = med ? med.price * sale.quantity : 0;
+          return [sale.buyerName, medName, sale.quantity.toString(), sale.date, totalPrice.toLocaleString('id-ID')];
+        });
+
+        doc.autoTable({
+          head: headers,
+          body: data,
+          startY: 40,
+          styles: { fontSize: 10 },
+          headStyles: { fillColor: [30, 64, 175] },
+        });
+
+        doc.save('laporan_penjualan_obat.pdf');
+      });
+
+      // Export expenses to PDF
+      exportExpensesPdfBtn.addEventListener('click', () => {
+        if (expenses.length === 0) {
+          alert('Tidak ada data pengeluaran untuk diekspor.');
+          return;
+        }
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        doc.setFontSize(18);
+        doc.text('Laporan Pengeluaran - Neo Love Pharmacy', 14, 22);
+        doc.setFontSize(12);
+        doc.text(`Tanggal: ${new Date().toLocaleDateString('id-ID')}`, 14, 30);
+
+        const headers = [['Deskripsi', 'Jumlah Pengeluaran (Rp)', 'Tanggal']];
+        const data = expenses.map(exp => [
+          exp.description,
+          Number(exp.amount).toLocaleString('id-ID'),
+          exp.date,
+        ]);
+
+        doc.autoTable({
+          head: headers,
+          body: data,
+          startY: 40,
+          styles: { fontSize: 10 },
+          headStyles: { fillColor: [30, 64, 175] },
+        });
+
+        doc.save('laporan_pengeluaran.pdf');
+      });
+
+      // Load jsPDF autotable plugin
+      function loadAutoTablePlugin() {
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js';
+        script.onload = () => {
+          // Plugin loaded
+        };
+        document.head.appendChild(script);
+      }
+      loadAutoTablePlugin();
+
+      // Initialization
+      function init() {
+        initializeData();
+        if (loggedInAdmin) {
+          showDashboardPage();
+        } else {
+          showLoginPage();
+        }
+      }
+
+      init();
+    })();
+  </script>
+</body>
+
+</html>
